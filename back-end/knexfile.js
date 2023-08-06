@@ -4,7 +4,7 @@
  * You will not need to make changes to this file.
  */
 
-require('dotenv').config();
+require("dotenv").config();
 const path = require("path");
 
 const {
@@ -28,6 +28,7 @@ module.exports = {
     },
     debug: !!DEBUG,
   },
+  //ZXquestions: when have the below, server will not run
   // test: {
   //   client: "postgresql",
   //   pool: { min: 1, max: 5 },
