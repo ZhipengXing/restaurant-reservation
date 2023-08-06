@@ -16,6 +16,9 @@ app.use(express.json());
 
 app.use("/reservations", reservationsRouter);
 
+//ZXtest: to see if backend is running
+app.use("/reservations/test", (req, res) => res.json({ data: "message" }));
+
 app.use(notFound);
 app.use(errorHandler);
 
