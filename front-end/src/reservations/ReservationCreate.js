@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationCreate() {
   const history = useHistory();
@@ -16,16 +17,20 @@ function ReservationCreate() {
     people: "",
   });
 
+  const [error, setError] = useState(null);
+
   function cancelHandler() {
     history.push("/");
   }
 
   function submitHandler(event) {
     event.preventDefault();
-    createReservation(reservation).then(() => {
-      console.log("date", reservation.time);
-      history.push("/");
-    });
+    createReservation(reservation)
+      .then(() =>
+        history.push(`/dashboard?date=${reservation.reservation_date}`)
+      )
+      .catch(setError);
+    console.log("new reservation date", reservation.reservation_date);
   }
 
   function changeHandler({ target: { name, value } }) {
@@ -38,6 +43,7 @@ function ReservationCreate() {
   return (
     <main>
       <h1 className="mb-3">Create New Reservation</h1>
+      <ErrorAlert error={error} />
       <form onSubmit={submitHandler} className="mb-4">
         <div className="row mb-3">
           <div className="col form-group">
@@ -92,12 +98,12 @@ function ReservationCreate() {
             </label>
             <input
               className="form-control"
-              id="date"
-              name="date"
+              id="reservation_date"
+              name="reservation_date"
               type="date"
               placeholder="YYYY-MM-DD"
               pattern="\d{4}-\d{2}-\d{2}"
-              value={reservation.date}
+              value={reservation.reservation_date}
               onChange={changeHandler}
               required={true}
             />
@@ -108,12 +114,12 @@ function ReservationCreate() {
             </label>
             <input
               className="form-control"
-              id="time"
-              name="time"
+              id="reservation_time"
+              name="reservation_time"
               type="time"
               placeholder="HH:MM"
               pattern="[0-9]{2}:[0-9]{2}"
-              value={reservation.time}
+              value={reservation.reservation_time}
               onChange={changeHandler}
               required={true}
             />

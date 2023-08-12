@@ -1,0 +1,20 @@
+const a = "2023-08-10";
+const b = "2023-08-11";
+const c = "14:10";
+const d = "13:00";
+const friday = new Date(b);
+const today = new Date();
+const day = friday.getDay();
+
+const time = new Date().getHours() + ":" + new Date().getMinutes();
+
+function compare(a, b) {
+  if (a < b) {
+    return "yes";
+  }
+  return "no";
+}
+
+// console.log(compare(c, d));
+
+console.log(typeof time);
