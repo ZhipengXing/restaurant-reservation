@@ -5,6 +5,7 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import ReservationCreate from "../reservations/ReservationCreate";
+import TableCreate from "../tables/TableCreate";
 /**
  * Defines all the routes for the application.
  *
@@ -27,6 +28,10 @@ function Routes() {
       {/* ZXnotes📝: adding Route to /reservations/new */}
       <Route path="/reservations/new">
         <ReservationCreate />
+      </Route>
+      {/* ZXnotes📝: adding Route to /tables/new */}
+      <Route path="/tables/new">
+        <TableCreate />
       </Route>
       <Route>
         <NotFound />

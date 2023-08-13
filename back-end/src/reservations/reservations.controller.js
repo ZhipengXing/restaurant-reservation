@@ -77,30 +77,44 @@ async function create(req, res) {
   });
 }
 //ZXquestions04: trying to do this at backend but frontend is not getting the right result
-// async function list(req, res) {
-//   let date = req.query.date;
-//   const data = await service.list();
-//   //ZXnotes📝: API will only select reservations for the queried date
-//   if (!date) {
-//     date = new Date().toJSON().slice(0, 10);
-//   }
-//   console.log("date", date);
-//   const selectedData = data.filter(
-//     (reservation) => reservation.reservation_date === date
-//   );
-//   console.log("selected", selectedData);
-//   res.json({
-//     selectedData,
-//   });
-// }
-
 async function list(req, res) {
-  const data = await service.list();
+  let date = req.query.date;
+  const allData = await service.list();
+
+  //ZXnotes📝:if we want /reservations to show all reservations and not just today
+  // if (!date) {
+  //   const data = allData;
+  //   res.json({
+  //     data,
+  //   });
+  // }
+  
+  //ZXnotes📝: API will only select reservations for the queried date
+  if (!date) {
+    date = new Date().toJSON().slice(0, 10);
+  }
+  console.log("date", date);
+
+  //ZXnotes📝: filter out dates and sort by time, earliest first
+  const data = allData
+    .filter((reservation) => reservation.reservation_date === date)
+    .sort((a, b) => (a.reservation_time < b.reservation_time ? -1 : 1));
 
   res.json({
     data,
   });
+  console.log("selected", data);
 }
+
+// async function list(req, res) {
+//   const data = await service.list();
+
+//   res.json({
+//     data,
+//   });
+
+//   console.log("data", data);
+// }
 
 module.exports = {
   list: [asyncErrorBoundary(list)],

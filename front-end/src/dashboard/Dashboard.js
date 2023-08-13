@@ -16,6 +16,10 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   let searchDate = new URLSearchParams(document.location.search).get("date");
+  if (searchDate) {
+    date = searchDate;
+  }
+  console.log("date/searchDate", date);
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
@@ -27,45 +31,33 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  if (!searchDate) {
-    searchDate = date;
-  }
+  console.log("reservations", reservations);
 
-  const selectedReservations = reservations.filter(
-    (reservation) => reservation.reservation_date === searchDate
-  );
-  console.log("searchDate", searchDate);
-  console.log("selected", selectedReservations);
-  console.log(reservations);
-
-  //ZXnotes📝: add function to sort by time, earliest first
-  const sortedReservations = selectedReservations.sort((a, b) =>
-    a.reservation_time < b.reservation_time ? -1 : 1
-  );
-
-  console.log("searchDate", searchDate);
-  const previousDate = previous(searchDate);
-  const nextDate = next(searchDate);
+  const previousDate = previous(date);
+  const nextDate = next(date);
   console.log("previous and next", previousDate, nextDate);
 
   function previousHandler() {
+    date = previousDate;
     history.push(`/dashboard?date=${previousDate}`);
     loadDashboard();
   }
 
   function nextHandler() {
+    date = nextDate;
     history.push(`/dashboard?date=${nextDate}`);
     loadDashboard();
   }
 
   //ZXnotes📝: add function to map observations into table format
-  const tableRows = sortedReservations.map((reservation) => (
+  const tableRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
       <th scope="row">{reservation.reservation_id}</th>
       <td>{reservation.first_name}</td>
       <td>{reservation.last_name}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
+      <td>{reservation.reservation_date}</td>
       <td>{reservation.people}</td>
     </tr>
   ));
@@ -86,6 +78,7 @@ function Dashboard({ date }) {
             <th scope="col">Last Name</th>
             <th scope="col">Mobile Number</th>
             <th scope="col">Time</th>
+            <th scope="col">Date</th>
             <th scope="col">Number of People</th>
           </tr>
         </thead>
@@ -117,11 +110,15 @@ function Dashboard({ date }) {
 }
 
 // ZXquestions04: trying to set date from backend but not working
+
 // function Dashboard({ date }) {
 //   const [reservations, setReservations] = useState([]);
 //   const [reservationsError, setReservationsError] = useState(null);
-//   const searchDate = new URLSearchParams(document.location.search).get("date");
-//   console.log("searchDate", searchDate);
+//   let searchDate = new URLSearchParams(document.location.search).get("date");
+//   if (searchDate) {
+//     date = searchDate;
+//   }
+//   console.log("date/searchDate", date);
 //   useEffect(loadDashboard, [date]);
 
 //   function loadDashboard() {
@@ -132,7 +129,7 @@ function Dashboard({ date }) {
 //       .catch(setReservationsError);
 //     return () => abortController.abort();
 //   }
-//   console.log(reservations);
+//   console.log("reservations", reservations);
 
 //   //ZXnotes📝: add function to sort by time, earliest first
 //   const sortedReservations = reservations.sort((a, b) =>
