@@ -82,3 +82,5 @@ export async function createReservation(reservation, signal) {
   };
   return await fetchJson(url, options);
 }
+
+//ZXnotes📝: adding function for createTable

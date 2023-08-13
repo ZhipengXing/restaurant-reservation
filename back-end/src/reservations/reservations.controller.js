@@ -5,6 +5,27 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+//ZXnotes📝: validate there is input data
+function hasData(req, res, next) {
+  if (req.body.data) {
+    return next();
+  }
+  next({ status: 400, message: "body must have data property" });
+}
+//ZXnotes📝: validate there is input data for each property
+function bodyDataHas(propertyName) {
+  return function (req, res, next) {
+    const { data = {} } = req.body;
+    if (data[propertyName]) {
+      return next();
+    }
+    next({
+      status: 400,
+      message: `reservation must include a ${propertyName}.`,
+    });
+  };
+}
+
 //ZXnotes📝: validate the number of people is at least 1
 function atLeastOne(req, res, next) {
   const people = req.body.data.people;
@@ -22,7 +43,7 @@ function dateIsValid(req, res, next) {
   if (date >= today && dayOfTheWeek != 2) {
     return next();
   } else if (date >= today && dayOfTheWeek === 2) {
-    return next({ status: 400, message: "Sorry, we are not open on Tuesdays" });
+    return next({ status: 400, message: "Sorry, we are closed on Tuesdays" });
   } else if (date < today && dayOfTheWeek != 2) {
     return next({
       status: 400,
@@ -32,7 +53,7 @@ function dateIsValid(req, res, next) {
     return next({
       status: 400,
       message:
-        "Reservation date must be in the future & we are not open on Tuesdays",
+        "Reservation date must be in the future & we are closed on Tuesdays",
     });
   }
 }
@@ -43,7 +64,7 @@ function dateIsNotTuesday(req, res, next) {
   const dayOfTheWeek = day.getDay() + 1;
   console.log(dayOfTheWeek);
   if (dayOfTheWeek === 2) {
-    return next({ status: 400, message: "Sorry, we are not open on Tuesdays" });
+    return next({ status: 400, message: "Sorry, we are closed on Tuesdays" });
   }
   next();
 }
@@ -88,7 +109,7 @@ async function list(req, res) {
   //     data,
   //   });
   // }
-  
+
   //ZXnotes📝: API will only select reservations for the queried date
   if (!date) {
     date = new Date().toJSON().slice(0, 10);
@@ -119,6 +140,13 @@ async function list(req, res) {
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
+    hasData,
+    bodyDataHas("first_name"),
+    bodyDataHas("last_name"),
+    bodyDataHas("mobile_number"),
+    bodyDataHas("reservation_date"),
+    bodyDataHas("reservation_time"),
+    bodyDataHas("people"),
     atLeastOne,
     dateIsValid,
     dateIsNotTuesday,
