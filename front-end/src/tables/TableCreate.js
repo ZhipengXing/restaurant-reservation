@@ -60,8 +60,8 @@ function TableCreate() {
               className="form-control"
               id="capacity"
               name="capacity"
-              type="integer"
-              //   pattern="[A-Za-z]{2,}"
+              type="number"
+              min="1"
               value={table.capacity}
               onChange={changeHandler}
               required={true}

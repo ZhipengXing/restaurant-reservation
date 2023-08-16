@@ -39,7 +39,7 @@ function ReservationCreate() {
       [name]: value,
     }));
   }
-
+  console.log(typeof reservation.people);
   return (
     <main>
       <h1 className="mb-3">Create New Reservation</h1>
@@ -83,7 +83,6 @@ function ReservationCreate() {
               id="mobile_number"
               name="mobile_number"
               type="tel"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               placeholder="XXX-XXX-XXXX"
               value={reservation.mobile_number}
               onChange={changeHandler}
@@ -133,6 +132,7 @@ function ReservationCreate() {
               id="people"
               name="people"
               type="number"
+              min="2"
               value={reservation.people}
               onChange={changeHandler}
               required={true}

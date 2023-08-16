@@ -72,6 +72,16 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
+//ZXnotes📝: adding function for list tables
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
 export async function createReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
@@ -94,3 +104,6 @@ export async function createTable(table, signal) {
   };
   return await fetchJson(url, options);
 }
+
+//ZXnotes📝: adding function to seat a reservation
+export async function seatReservation() {}

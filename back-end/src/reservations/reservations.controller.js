@@ -53,9 +53,12 @@ function timeValidation(req, res, next) {
 }
 
 //ZXnotes📝: validate the number of people is at least 1 and it is a number
+////ZXquestions07:people becomes a string, how to validate input is number
 function peopleValidation(req, res, next) {
   const people = req.body.data.people;
-  if (people >= 1 && typeof people == "number") {
+  console.log("people", people, typeof people);
+  if (people >= 1) {
+    // && typeof people == "number"
     return next();
   }
   next({ status: 400, message: "Number of people must be more than 1" });

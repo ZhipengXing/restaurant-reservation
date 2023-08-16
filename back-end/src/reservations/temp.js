@@ -16,5 +16,6 @@ function compare(a, b) {
 }
 
 // console.log(compare(c, d));
-
-console.log(typeof time);
+const e = 33;
+const f = e>=1;
+console.log(f);

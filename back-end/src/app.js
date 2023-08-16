@@ -8,6 +8,7 @@ const cors = require("cors");
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 const reservationsRouter = require("./reservations/reservations.router");
+const tablesRouter = require("./tables/tables.router");
 
 const app = express();
 
@@ -15,9 +16,11 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/reservations", reservationsRouter);
+app.use("/tables", tablesRouter);
 
 //ZXtest: to see if backend is running
 app.use("/reservations/test", (req, res) => res.json({ data: "message" }));
+app.use("/tables/test", (req, res) => res.json({ data: "message" }));
 
 app.use(notFound);
 app.use(errorHandler);
