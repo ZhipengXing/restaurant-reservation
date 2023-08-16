@@ -118,11 +118,20 @@ function timeIsValid(req, res, next) {
   next();
 }
 
+// async function create(req, res) {
+//   const data = await service.create(req.body);
+//   res.status(201).json({
+//     data,
+//   });
+// }
+
 async function create(req, res) {
-  const newReservation = await service.create(req.body.data);
-  res.status(201).json({ data: newReservation });
-  console.log("here", newReservation);
+  const data = await service.create(req.body.data);
+  res.status(201).json({
+    data,
+  });
 }
+
 //ZXquestions04: trying to do this at backend but frontend is not getting the right result
 async function list(req, res) {
   let date = req.query.date;
@@ -174,8 +183,8 @@ module.exports = {
     bodyDataHas("reservation_time"),
     bodyDataHas("people"),
     dateValidation,
-    timeValidation,
     peopleValidation,
+    timeValidation,
     dateIsValid,
     dateIsNotTuesday,
     timeIsValid,
