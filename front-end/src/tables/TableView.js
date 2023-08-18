@@ -2,7 +2,7 @@ import React from "react";
 
 function TableView({ table }) {
   let text = "Free";
-  if (!table.is_free) {
+  if (table.reservation_id) {
     text = "Occupied";
   }
   return (

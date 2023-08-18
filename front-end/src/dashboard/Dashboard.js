@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { listReservations } from "../utils/api";
-import { listTables } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import reactRouterDom from "react-router-dom";
 import { previous, next } from "../utils/date-time";

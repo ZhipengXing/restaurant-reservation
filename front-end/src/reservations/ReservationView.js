@@ -15,8 +15,8 @@ function ReservationView({ reservation }) {
         <td>{reservation.people}</td>
         {/* add seat button */}
         <td>
-          <a href={`reservations/${reservation.reservation_id}/seat`}>
-            <button>Seat</button>
+          <a href={`/reservations/${reservation.reservation_id}/seat`}>
+            <button className="btn btn-primary">Seat</button>
           </a>
         </td>
       </tr>
