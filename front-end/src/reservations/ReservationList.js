@@ -15,6 +15,7 @@ function ReservationList({ reservations }) {
             <th scope="col">Time</th>
             <th scope="col">Date</th>
             <th scope="col">Number of People</th>
+            <th scope="col">Status</th>
             <th scope="col">Seat</th>
           </tr>
         </thead>

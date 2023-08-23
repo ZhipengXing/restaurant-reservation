@@ -19,7 +19,7 @@ function TableCreate() {
 
   function submitHandler(event) {
     event.preventDefault();
-    createTable(table)
+    createTable({ ...table, capacity: Number(table.capacity) })
       .then(() => history.push("/"))
       .catch(setError);
   }

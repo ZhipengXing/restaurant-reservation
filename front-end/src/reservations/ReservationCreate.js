@@ -25,7 +25,7 @@ function ReservationCreate() {
 
   function submitHandler(event) {
     event.preventDefault();
-    createReservation(reservation)
+    createReservation({ ...reservation, people: Number(reservation.people) })
       .then(() =>
         history.push(`/dashboard?date=${reservation.reservation_date}`)
       )

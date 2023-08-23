@@ -57,8 +57,8 @@ function timeValidation(req, res, next) {
 function peopleValidation(req, res, next) {
   const people = req.body.data.people;
   console.log("people", people, typeof people);
-  if (people >= 1) {
-    // && typeof people == "number"
+  if (typeof people == "number" && people >= 1) {
+    //
     return next();
   }
   next({ status: 400, message: "Number of people must be more than 1" });
@@ -135,6 +135,42 @@ async function reservationExists(req, res, next) {
   });
 }
 
+//ZXnotes📝: validate reservation is not finished
+function reservationNotFinished(req, res, next) {
+  const reservation = res.locals.reservation;
+  if (reservation.status === "finished") {
+    next({
+      status: 400,
+      message: `reservation cannot already be finished`,
+    });
+  }
+  next();
+}
+
+//ZXnotes📝: validate reservation status input is either fnished or seated
+function unknownStatusValidation(req, res, next) {
+  const status = req.body.data.status;
+  if (status !== "finished" && status !== "seated" && status !== "booked") {
+    next({
+      status: 400,
+      message: `unknown reservation status`,
+    });
+  }
+  next();
+}
+
+//ZXnotes📝: validate new reservation status can only be "booked"
+function newReservationStatusValidation(req, res, next) {
+  const status = req.body.data.status;
+  if (status && status !== "booked") {
+    next({
+      status: 400,
+      message: `new reservation status can not be "finished" or "seated"`,
+    });
+  }
+  next();
+}
+
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
   res.status(201).json({ data: newReservation });
@@ -161,7 +197,11 @@ async function list(req, res) {
 
   //ZXnotes📝: filter out dates and sort by time, earliest first
   const data = allData
-    .filter((reservation) => reservation.reservation_date === date)
+    .filter(
+      (reservation) =>
+        reservation.reservation_date === date &&
+        reservation.status !== "finished"
+    )
     .sort((a, b) => (a.reservation_time < b.reservation_time ? -1 : 1));
 
   res.json({
@@ -173,6 +213,14 @@ async function list(req, res) {
 function read(req, res) {
   const data = res.locals.reservation;
   res.json({ data });
+}
+
+//ZXnotes📝: update reservation status
+async function updateStatus(req, res) {
+  const reservation = res.locals.reservation;
+  const status = req.body.data.status;
+  const data = await service.updateStatus(reservation.reservation_id, status);
+  res.status(200).json({ data: { status: data[0].status } });
 }
 
 module.exports = {
@@ -192,6 +240,13 @@ module.exports = {
     dateIsValid,
     dateIsNotTuesday,
     timeIsValid,
+    newReservationStatusValidation,
     asyncErrorBoundary(create),
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    reservationNotFinished,
+    unknownStatusValidation,
+    asyncErrorBoundary(updateStatus),
   ],
 };

@@ -21,6 +21,7 @@ function TableList() {
     } catch (error) {
       setTablesError(error);
     }
+
     return () => abortController.abort();
   }
 
@@ -38,7 +39,9 @@ function TableList() {
     if (result) {
       try {
         await freeTable(id, abortController.signal);
-        await loadTables();
+        //ZXnotes📝: this line is not needed since we need to reload reservation tables too
+        // await loadTables();
+        history.push("/");
       } catch (error) {
         setTablesError(error);
       }

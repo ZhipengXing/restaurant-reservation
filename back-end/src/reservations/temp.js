@@ -3,7 +3,6 @@ const b = "2023-08-11";
 const c = "14:10";
 const d = "13:00";
 const friday = new Date(b);
-const today = new Date();
 const day = friday.getDay();
 
 const time = new Date().getHours() + ":" + new Date().getMinutes();
@@ -80,4 +79,20 @@ const g = "  ";
 
 const freeTables = tables.filter((table) => !table.reservation_id);
 const mapTables = tables.map((table) => !table.reservation_id);
-console.log(g.split(" ").join("").length);
+
+const today = new Date();
+const today1 = "2023-08-23";
+const localDate = new Date(today + "Z");
+const inputdate = new Date(today1 + "Z");
+const localtoday = today.toLocaleDateString();
+
+function asDateString(date) {
+  return `${date.getFullYear().toString(10)}-${(date.getMonth() + 1)
+    .toString(10)
+    .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
+}
+
+// console.log(g.split(" ").join("").length);
+// console.log(localDate, typeof localDate);
+// console.log(asDateString(localDate));
+console.log(asDateString(inputdate));

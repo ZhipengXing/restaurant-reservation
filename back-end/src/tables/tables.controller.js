@@ -42,8 +42,7 @@ function tableNameIsValid(req, res, next) {
 //ZXquestions08:capacity becomes a string, how to validate input is number
 function tableCapacityIsValid(req, res, next) {
   const capacity = req.body.data.capacity;
-  if (capacity >= 1) {
-    //&& typeof capacity === "number"
+  if (typeof capacity === "number" && capacity >= 1) {
     return next();
   }
   next({
@@ -114,6 +113,18 @@ function tableIsOccupied(req, res, next) {
   });
 }
 
+//ZXnotes📝:to validate current reservation is not seated
+function reservationIsNotSeated(req, res, next) {
+  const { reservation } = res.locals;
+  if (reservation.status === "seated") {
+    next({
+      status: 400,
+      message: `reservation is already seated`,
+    });
+  }
+  next();
+}
+
 //ZXnotes📝:to list all tables
 async function list(req, res) {
   const allData = await service.list();
@@ -136,7 +147,7 @@ async function update(req, res) {
 //ZXnotes📝:to free up a table
 async function destroyReservation(req, res) {
   const table = res.locals.table;
-  await service.destroy(table.table_id, table.reservation_id);
+  await service.destroy(table.reservation_id, table.table_id);
   const data = await service.list();
   res.json({ data });
 }
@@ -159,6 +170,7 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(enoughCapacity),
     tableIsFree,
+    reservationIsNotSeated,
     asyncErrorBoundary(update),
   ],
   delete: [

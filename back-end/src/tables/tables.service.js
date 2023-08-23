@@ -20,16 +20,32 @@ function list() {
   return knex("tables").select("*");
 }
 
-function update(reservation_id, table_id) {
-  return knex("tables")
+async function update(reservation_id, table_id) {
+  const trx = await knex.transaction();
+  return trx("tables")
     .where({ table_id })
-    .update({ reservation_id: reservation_id, status: "Occupied" }, "*");
+    .update({ reservation_id: reservation_id, status: "Occupied" }, "*")
+    .then(() =>
+      trx("reservations")
+        .where({ reservation_id })
+        .update({ status: "seated" }, "*")
+    )
+    .then(trx.commit)
+    .catch(trx.rollback);
 }
 
-function destroyReservation(table_id) {
-  return knex("tables")
+async function destroyReservation(reservation_id, table_id) {
+  const trx = await knex.transaction();
+  return trx("tables")
     .where({ table_id })
-    .update({ reservation_id: null, status: "Free" }, "*");
+    .update({ reservation_id: null, status: "Free" }, "*")
+    .then(() =>
+      trx("reservations")
+        .where({ reservation_id })
+        .update({ status: "finished" }, "*")
+    )
+    .then(trx.commit)
+    .catch(trx.rollback);
 }
 
 module.exports = {
