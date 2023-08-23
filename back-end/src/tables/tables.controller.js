@@ -102,6 +102,18 @@ function tableIsFree(req, res, next) {
   });
 }
 
+//ZXnotes📝:to validate table is currently occupied
+function tableIsOccupied(req, res, next) {
+  const { table } = res.locals;
+  if (table.reservation_id) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Table ${table.table_name} is not occupied`,
+  });
+}
+
 //ZXnotes📝:to list all tables
 async function list(req, res) {
   const allData = await service.list();
@@ -118,6 +130,14 @@ async function create(req, res) {
 async function update(req, res) {
   const { table, reservation } = res.locals;
   const data = await service.update(reservation.reservation_id, table.table_id);
+  res.json({ data });
+}
+
+//ZXnotes📝:to free up a table
+async function destroyReservation(req, res) {
+  const table = res.locals.table;
+  await service.destroy(table.table_id, table.reservation_id);
+  const data = await service.list();
   res.json({ data });
 }
 
@@ -140,5 +160,10 @@ module.exports = {
     asyncErrorBoundary(enoughCapacity),
     tableIsFree,
     asyncErrorBoundary(update),
+  ],
+  delete: [
+    asyncErrorBoundary(tableExists),
+    tableIsOccupied,
+    asyncErrorBoundary(destroyReservation),
   ],
 };

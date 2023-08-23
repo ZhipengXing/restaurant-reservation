@@ -26,10 +26,17 @@ function update(reservation_id, table_id) {
     .update({ reservation_id: reservation_id, status: "Occupied" }, "*");
 }
 
+function destroyReservation(table_id) {
+  return knex("tables")
+    .where({ table_id })
+    .update({ reservation_id: null, status: "Free" }, "*");
+}
+
 module.exports = {
   create,
   list,
   update,
   readTable,
   readReservation,
+  destroy: destroyReservation,
 };
