@@ -65,7 +65,7 @@ export async function listReservations(params, signal) {
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
-  console.log("url2", url);
+
   return await fetchJson(url, { headers, signal }, [])
     //ZXquestions02: when the following two lines (from original code) are included, it is returning an empty array.
     .then(formatReservationDate)
@@ -139,4 +139,10 @@ export async function updateReservationStatus(data, reservation_id, signal) {
     signal,
   };
   return await fetchJson(url, options);
+}
+
+//ZXnotes📝: adding function to list reservations with mobile numbers match search number
+export async function listReservationsWithNumber(number, signal) {
+  const url = `${API_BASE_URL}/reservations?mobile_number=${number}`;
+  return await fetchJson(url, { headers, signal }, []);
 }

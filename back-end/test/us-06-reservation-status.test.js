@@ -207,7 +207,7 @@ describe("US-06 - Reservation status", () => {
     test("returns 200 and changes reservation status to 'finished'", async () => {
       expect(tableOne).not.toBeUndefined();
       expect(reservationOne).not.toBeUndefined();
-
+      console.log("ONE", reservationOne);
       const seatResponse = await request(app)
         .put(`/tables/${tableOne.table_id}/seat`)
         .set("Accept", "application/json")
@@ -270,7 +270,9 @@ describe("US-06 - Reservation status", () => {
 
       const reservationsResponse = await request(app)
         .get(
-          `/reservations?date=${asDateString(reservationOne.reservation_date)}`
+          `/reservations?date=${reservationOne.reservation_date}`
+          //ZXnotes📝: asDateString function in the get request since reservationOne.reservation_date is a string already
+          // `/reservations?date=${asDateString(reservationOne.reservation_date)}`
         )
         .set("Accept", "application/json");
 

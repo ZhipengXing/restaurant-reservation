@@ -176,29 +176,40 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
   console.log("here", newReservation);
 }
-
+//ZXquestions04: trying to do this at backend but frontend is not getting the right result
 async function list(req, res) {
-  let { date, mobile_number } = req.query;
-  let data = null;
+  let date = req.query.date;
 
-  if (mobile_number) {
-    data = await service.listByNumber(mobile_number);
-    res.json({
-      data,
-    });
+  
+  const allData = await service.list();
+
+  //ZXnotes📝:if we want /reservations to show all reservations and not just today
+  // if (!date) {
+  //   const data = allData;
+  //   res.json({
+  //     data,
+  //   });
+  // }
+
+  //ZXnotes📝: API will only select reservations for the queried date
+  if (!date) {
+    date = new Date().toJSON().slice(0, 10);
   }
+  console.log("date", date);
 
-  const alldata = await service.listByDate(
-    date || new Date().toJSON().slice(0, 10)
-  );
-  data = alldata.filter(
-    (reservation) =>
-      reservation.status === "booked" || reservation.status === "seated"
-  );
+  //ZXnotes📝: filter out dates and sort by time, earliest first
+  const data = allData
+    .filter(
+      (reservation) =>
+        reservation.reservation_date === date &&
+        reservation.status !== "finished"
+    )
+    .sort((a, b) => (a.reservation_time < b.reservation_time ? -1 : 1));
 
   res.json({
     data,
   });
+  console.log("selected", data);
 }
 
 function read(req, res) {
