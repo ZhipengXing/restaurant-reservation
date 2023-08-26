@@ -35,10 +35,20 @@ async function updateStatus(reservation_id, status) {
     .update({ status: status }, "*");
 }
 
+async function updateReservation(updatedReservation) {
+  return knex("reservations")
+    .where({
+      reservation_id: updatedReservation.reservation_id,
+    })
+    .update(updatedReservation, "*")
+    .then((rows) => rows[0]);
+}
+
 module.exports = {
   create,
   listByDate,
   listByNumber,
   read,
   updateStatus,
+  updateReservation,
 };

@@ -106,13 +106,16 @@ function timeIsValid(req, res, next) {
   const date = req.body.data.reservation_date;
   const today = new Date().toLocaleDateString("fr-CA");
   const timeNow = new Date().getHours() + ":" + new Date().getMinutes();
-  console.log("time and timeNow", time, timeNow);
+  console.log("time and timeNow", time, timeNow, typeof time, typeof timeNow);
   if (time < "10:30" || time > "21:30") {
     return next({
       status: 400,
       message: "Please only reserve time between 10:30AM and 9:30PM",
     });
-  } else if (date === today && time <= timeNow) {
+  } else if (
+    date === today &&
+    Number(time.replace(":", "")) <= Number(timeNow.replace(":", ""))
+  ) {
     return next({
       status: 400,
       message: "Reservation must be in the future",
@@ -147,10 +150,27 @@ function reservationNotFinished(req, res, next) {
   next();
 }
 
+//ZXnotes📝: validate reservation status is booked
+function reservationBooked(req, res, next) {
+  const reservation = res.locals.reservation;
+  if (reservation.status !== "booked") {
+    next({
+      status: 400,
+      message: `only booked reservation can be edited`,
+    });
+  }
+  next();
+}
+
 //ZXnotes📝: validate reservation status input is either fnished or seated
 function unknownStatusValidation(req, res, next) {
   const status = req.body.data.status;
-  if (status !== "finished" && status !== "seated" && status !== "booked") {
+  if (
+    status !== "finished" &&
+    status !== "seated" &&
+    status !== "booked" &&
+    status !== "cancelled"
+  ) {
     next({
       status: 400,
       message: `unknown reservation status`,
@@ -214,6 +234,16 @@ async function updateStatus(req, res) {
   res.status(200).json({ data: { status: data[0].status } });
 }
 
+//ZXnotes📝: update reservation
+async function updateReservation(req, res) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.updateReservation(updatedReservation);
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(reservationExists), read],
@@ -239,5 +269,24 @@ module.exports = {
     reservationNotFinished,
     unknownStatusValidation,
     asyncErrorBoundary(updateStatus),
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    reservationBooked,
+    hasData,
+    bodyDataHas("first_name"),
+    bodyDataHas("last_name"),
+    bodyDataHas("mobile_number"),
+    bodyDataHas("reservation_date"),
+    bodyDataHas("reservation_time"),
+    bodyDataHas("people"),
+    dateValidation,
+    timeValidation,
+    peopleValidation,
+    dateIsValid,
+    dateIsNotTuesday,
+    timeIsValid,
+    newReservationStatusValidation,
+    asyncErrorBoundary(updateReservation),
   ],
 };

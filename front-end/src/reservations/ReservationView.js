@@ -2,7 +2,7 @@
 
 import React from "react";
 
-function ReservationView({ reservation }) {
+function ReservationView({ reservation, cancelHandler }) {
   return (
     <>
       <tr key={reservation.reservation_id}>
@@ -22,6 +22,30 @@ function ReservationView({ reservation }) {
             <a href={`/reservations/${reservation.reservation_id}/seat`}>
               <button className="btn btn-primary">Seat</button>
             </a>
+          ) : (
+            <div></div>
+          )}
+        </td>
+        <td>
+          {" "}
+          {reservation.status === "booked" ? (
+            <a href={`/reservations/${reservation.reservation_id}/edit`}>
+              <button className="btn btn-primary"> Edit</button>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </td>
+        <td>
+          {" "}
+          {reservation.status === "booked" ? (
+            <button
+              className="btn btn-primary"
+              data-reservation-id-cancel={reservation.reservation_id}
+              onClick={cancelHandler}
+            >
+              Cancel
+            </button>
           ) : (
             <div></div>
           )}

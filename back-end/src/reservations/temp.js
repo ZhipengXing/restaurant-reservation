@@ -92,7 +92,11 @@ function asDateString(date) {
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
 }
 
+const time1 = "1000";
+const time2 = "8:51";
+
 // console.log(g.split(" ").join("").length);
 // console.log(localDate, typeof localDate);
 // console.log(asDateString(localDate));
-console.log(asDateString(inputdate));
+// console.log(asDateString(inputdate));
+console.log(Number(time1.replace(":", "")) < Number(time2.replace(":", "")));

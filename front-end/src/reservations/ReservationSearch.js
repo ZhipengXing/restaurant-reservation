@@ -24,6 +24,7 @@ function ReservationSearch() {
       //   if (response.length === 0) {
       //     setError({ message: "No reservations found" });
       //   }
+      console.log("response", response)
       setReservations(response);
     } catch (error) {
       setError(error);

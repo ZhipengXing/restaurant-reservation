@@ -146,3 +146,33 @@ export async function listReservationsWithNumber(number, signal) {
   const url = `${API_BASE_URL}/reservations?mobile_number=${number}`;
   return await fetchJson(url, { headers, signal }, []);
 }
+
+//ZXnotes📝: adding function to update a reservation
+export async function updateReservation(reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+//ZXnotes📝: adding function to get a single reservations
+export async function getReservation(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  return await fetchJson(url, { headers, signal }, []);
+}
+
+//ZXnotes📝: adding function to cancel a reservation
+export async function cancelReservation(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status: "cancelled" } }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}

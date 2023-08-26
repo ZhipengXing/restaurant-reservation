@@ -133,7 +133,12 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-  const newTable = await service.create(req.body.data);
+  const createTableParams = req.body.data;
+  if (createTableParams.reservation_id) {
+    createTableParams.status = "Occupied";
+  }
+  const newTable = await service.create(createTableParams);
+
   res.status(201).json({ data: newTable });
 }
 

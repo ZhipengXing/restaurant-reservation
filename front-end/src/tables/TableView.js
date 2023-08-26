@@ -4,10 +4,6 @@ import { freeTable, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 function TableView({ table, finishHandler }) {
   const [error, setError] = useState(null); //not needed?
-  let text = "Free";
-  if (table.reservation_id) {
-    text = "Occupied";
-  }
 
   return (
     <>
@@ -17,9 +13,9 @@ function TableView({ table, finishHandler }) {
         <td>{table.table_name}</td>
         <td>{table.capacity}</td>
         {/* //ZXquestions06: what does data-table-id-status mean? */}
-        <td data-table-id-status={table.table_id}>{text}</td>
+        <td data-table-id-status={table.table_id}>{table.status}</td>
         <td>{table.reservation_id}</td>
-        {/* add Finish button */}
+
         <td>
           {table.reservation_id ? (
             <button

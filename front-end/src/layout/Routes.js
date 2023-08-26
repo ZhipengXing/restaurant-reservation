@@ -8,6 +8,8 @@ import ReservationCreate from "../reservations/ReservationCreate";
 import TableCreate from "../tables/TableCreate";
 import ReservationSeat from "../reservations/ReservationSeat";
 import ReservationSearch from "../reservations/ReservationSearch";
+import ReservationUpdate from "../reservations/ReservationUpdate";
+
 /**
  * Defines all the routes for the application.
  *
@@ -38,6 +40,10 @@ function Routes() {
       {/* ZXnotes📝: adding Route to /reservations/:reservation_id/seat */}
       <Route path="/reservations/:reservation_id/seat">
         <ReservationSeat />
+      </Route>
+      {/* ZXnotes📝: adding Route to /reservations/:reservation_id/edit */}
+      <Route path="/reservations/:reservation_id/edit">
+        <ReservationUpdate />
       </Route>
       {/* ZXnotes📝: adding Route to /search*/}
       <Route path="/search">
