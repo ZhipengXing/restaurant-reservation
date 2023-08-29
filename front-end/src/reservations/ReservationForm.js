@@ -5,7 +5,6 @@ function ReservationForm({ reservation, changeHandler, submitHandler }) {
   const history = useHistory();
 
   function cancelHandler() {
-    // history.push("/");
     history.goBack();
   }
 

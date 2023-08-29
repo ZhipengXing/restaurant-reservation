@@ -6,14 +6,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationUpdate() {
   const history = useHistory();
-  const [reservation, setReservation] = useState({
-    first_name: "",
-    last_name: "",
-    mobile_number: "",
-    reservation_date: "",
-    reservation_time: "",
-    people: "",
-  });
+  const [reservation, setReservation] = useState({});
   const [error, setError] = useState(null);
   const { reservation_id } = useParams();
 
@@ -25,7 +18,7 @@ function ReservationUpdate() {
     return () => abortController.abort();
   }, [reservation_id]);
 
-  console.log("status", reservation);
+  console.log("reservation🎃 ", reservation);
 
   function changeHandler({ target: { name, value } }) {
     setReservation((previousReservation) => ({
@@ -35,7 +28,6 @@ function ReservationUpdate() {
   }
 
   async function submitHandler(event) {
-    console.log("🎃");
     event.preventDefault();
     await updateReservation({
       ...reservation,
@@ -49,6 +41,23 @@ function ReservationUpdate() {
       //ZXquestions10: how to go back to previous page and previous page needs refreshing?
       .catch(setError);
   }
+
+  // async function submitHandler(event) {
+  //   console.log("🎃");
+  //   event.preventDefault();
+  //   try {
+  //     const res = await updateReservation({
+  //       ...reservation,
+  //       people: Number(reservation.people),
+  //     });
+  //     setReservation({ ...res });
+  //     console.log("res🎃", res);
+  //     history.push(`/dashboard?date=${res.reservation_date}`);
+  //   } catch (error) {
+  //     console.log("error🎃", error);
+  //     setError(error);
+  //   }
+  // }
 
   return (
     <main>
