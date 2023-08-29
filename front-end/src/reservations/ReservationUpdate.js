@@ -18,7 +18,6 @@ function ReservationUpdate() {
     return () => abortController.abort();
   }, [reservation_id]);
 
-  console.log("reservation🎃 ", reservation);
 
   function changeHandler({ target: { name, value } }) {
     setReservation((previousReservation) => ({
@@ -35,29 +34,10 @@ function ReservationUpdate() {
     })
       .then((res) => {
         setReservation({ ...res });
-        console.log("🎃", res.reservation_date);
         history.push(`/dashboard?date=${res.reservation_date}`);
       })
-      //ZXquestions10: how to go back to previous page and previous page needs refreshing?
       .catch(setError);
   }
-
-  // async function submitHandler(event) {
-  //   console.log("🎃");
-  //   event.preventDefault();
-  //   try {
-  //     const res = await updateReservation({
-  //       ...reservation,
-  //       people: Number(reservation.people),
-  //     });
-  //     setReservation({ ...res });
-  //     console.log("res🎃", res);
-  //     history.push(`/dashboard?date=${res.reservation_date}`);
-  //   } catch (error) {
-  //     console.log("error🎃", error);
-  //     setError(error);
-  //   }
-  // }
 
   return (
     <main>

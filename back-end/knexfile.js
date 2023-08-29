@@ -28,7 +28,6 @@ module.exports = {
     },
     debug: !!DEBUG,
   },
-  //ZXquestions: when have the below, server will not run; cannot deploy the backend
   test: {
     client: "postgresql",
     pool: { min: 1, max: 5 },

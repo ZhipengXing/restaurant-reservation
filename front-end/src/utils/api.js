@@ -60,14 +60,12 @@ async function fetchJson(url, options, onCancel) {
 
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
-  console.log("url", url);
-  console.log("params", params);
+
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
 
   return await fetchJson(url, { headers, signal }, [])
-    //ZXquestions02: when the following two lines (from original code) are included, it is returning an empty array.
     .then(formatReservationDate)
     .then(formatReservationTime);
 }

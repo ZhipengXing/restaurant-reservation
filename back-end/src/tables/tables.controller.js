@@ -39,7 +39,6 @@ function tableNameIsValid(req, res, next) {
 }
 
 //ZXnotes📝: validate table capacity is at least 1 and a number
-//ZXquestions08:capacity becomes a string, how to validate input is number
 function tableCapacityIsValid(req, res, next) {
   const capacity = req.body.data.capacity;
   if (typeof capacity === "number" && capacity >= 1) {

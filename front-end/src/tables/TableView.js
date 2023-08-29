@@ -12,7 +12,6 @@ function TableView({ table, finishHandler }) {
         <th scope="row">{table.table_id}</th>
         <td>{table.table_name}</td>
         <td>{table.capacity}</td>
-        {/* //ZXquestions06: what does data-table-id-status mean? */}
         <td data-table-id-status={table.table_id}>{table.status}</td>
         <td>{table.reservation_id}</td>
 

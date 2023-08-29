@@ -27,7 +27,6 @@ function ReservationCreate() {
         history.push(`/dashboard?date=${reservation.reservation_date}`)
       )
       .catch(setError);
-    console.log("new reservation date", reservation.reservation_date);
   }
 
   function changeHandler({ target: { name, value } }) {
@@ -36,7 +35,6 @@ function ReservationCreate() {
       [name]: value,
     }));
   }
-  console.log(typeof reservation.people);
   return (
     <main>
       <h1 className="mb-3">Create New Reservation</h1>

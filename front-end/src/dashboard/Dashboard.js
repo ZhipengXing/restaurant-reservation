@@ -20,7 +20,6 @@ function Dashboard({ date }) {
   if (searchDate) {
     date = searchDate;
   }
-  console.log("date/searchDate", date);
   useEffect(loadDashboard, [date]);
   function loadDashboard() {
     const abortController = new AbortController();
@@ -31,11 +30,9 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  console.log("reservations", reservations);
 
   const previousDate = previous(date);
   const nextDate = next(date);
-  console.log("previous and next", previousDate, nextDate);
 
   function previousHandler() {
     date = previousDate;

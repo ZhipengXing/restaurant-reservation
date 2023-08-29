@@ -23,11 +23,9 @@ function ReservationSeat() {
 
   function submitHandler(event) {
     event.preventDefault();
-    console.log("chose", JSON.parse(option));
     const table_id = JSON.parse(option).table_id;
     seatReservation(table_id, reservation_id)
       .then((res) => {
-        console.log("res", res);
         history.push("/");
       })
       .catch(setError);

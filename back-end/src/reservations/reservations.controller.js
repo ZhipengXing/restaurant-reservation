@@ -53,10 +53,8 @@ function timeValidation(req, res, next) {
 }
 
 //ZXnotes📝: validate the number of people is at least 1 and it is a number
-//ZXquestions07:people becomes a string, how to validate input is number
 function peopleValidation(req, res, next) {
   const people = req.body.data.people;
-  console.log("people", people, typeof people);
   if (typeof people == "number" && people >= 1) {
     //
     return next();
@@ -87,12 +85,10 @@ function dateIsValid(req, res, next) {
     });
   }
 }
-//ZXquestions05:need to add 1 so the day works?
 function dateIsNotTuesday(req, res, next) {
   const date = req.body.data.reservation_date;
   const day = new Date(date);
   const dayOfTheWeek = day.getDay() + 1;
-  console.log(dayOfTheWeek);
   if (dayOfTheWeek === 2) {
     return next({ status: 400, message: "Sorry, we are closed on Tuesdays" });
   }
@@ -106,7 +102,6 @@ function timeIsValid(req, res, next) {
   const date = req.body.data.reservation_date;
   const today = new Date().toLocaleDateString("fr-CA");
   const timeNow = new Date().getHours() + ":" + new Date().getMinutes();
-  console.log("time and timeNow", time, timeNow, typeof time, typeof timeNow);
   if (time < "10:30" || time > "21:30") {
     return next({
       status: 400,
@@ -127,7 +122,6 @@ function timeIsValid(req, res, next) {
 //ZXnotes📝: validate reservation exists
 async function reservationExists(req, res, next) {
   const reservation = await service.read(req.params.reservation_id);
-  console.log("reser", reservation);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
@@ -194,7 +188,6 @@ function newReservationStatusValidation(req, res, next) {
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
   res.status(201).json({ data: newReservation });
-  console.log("here", newReservation);
 }
 
 async function list(req, res) {
