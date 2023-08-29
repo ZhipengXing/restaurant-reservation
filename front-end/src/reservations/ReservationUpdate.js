@@ -6,7 +6,14 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationUpdate() {
   const history = useHistory();
-  const [reservation, setReservation] = useState({});
+  const [reservation, setReservation] = useState({
+    first_name: "",
+    last_name: "",
+    mobile_number: "",
+    reservation_date: "",
+    reservation_time: "",
+    people: "",
+  });
   const [error, setError] = useState(null);
   const { reservation_id } = useParams();
 
@@ -36,7 +43,7 @@ function ReservationUpdate() {
     })
       .then((res) => {
         setReservation({ ...res });
-        console.log("🎃", res);
+        console.log("🎃", res.reservation_date);
         history.push(`/dashboard?date=${res.reservation_date}`);
       })
       //ZXquestions10: how to go back to previous page and previous page needs refreshing?
