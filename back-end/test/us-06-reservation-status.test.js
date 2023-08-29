@@ -267,12 +267,9 @@ describe("US-06 - Reservation status", () => {
 
       expect(finishResponse.body.error).toBeUndefined();
       expect(finishResponse.status).toBe(200);
-console.log("reservation1🎃", reservationOne)
-console.log("reservationdate🎃", reservationOne.reservation_date)
+
       const reservationsResponse = await request(app)
         .get(
-          // `/reservations?date=${reservationOne.reservation_date}`
-          //ZXnotes📝: asDateString function in the get request since reservationOne.reservation_date is a string already
           `/reservations?date=${asDateString(reservationOne.reservation_date)}`
         )
         .set("Accept", "application/json");
